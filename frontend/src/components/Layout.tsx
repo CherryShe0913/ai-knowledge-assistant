@@ -1,11 +1,14 @@
+import { useState } from 'react';
 import { Outlet, useNavigate, Link, useLocation } from 'react-router-dom';
-import { Bot, MessageSquare, FileText, LogOut, User } from 'lucide-react';
+import { Bot, MessageSquare, FileText, LogOut, User, BarChart2, Settings } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
+import ProfileModal from './ProfileModal';
 
 export default function Layout() {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
+  const [showProfile, setShowProfile] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -15,6 +18,7 @@ export default function Layout() {
   const navItems = [
     { to: '/', icon: MessageSquare, label: 'AI 对话' },
     { to: '/documents', icon: FileText, label: '知识库' },
+    { to: '/stats', icon: BarChart2, label: '使用统计' },
   ];
 
   return (
@@ -52,14 +56,30 @@ export default function Layout() {
 
         {/* User */}
         <div className="px-3 py-4 border-t border-gray-100">
-          <div className="flex items-center gap-3 px-3 py-2">
-            <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-              <User className="w-4 h-4 text-gray-500" />
-            </div>
+          <div className="flex items-center gap-2 px-3 py-2">
+            {user?.avatar ? (
+              <img
+                src={user.avatar}
+                alt="avatar"
+                className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+              />
+            ) : (
+              <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0">
+                <User className="w-4 h-4 text-gray-500" />
+              </div>
+            )}
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-gray-800 truncate">{user?.name}</p>
               <p className="text-xs text-gray-400 truncate">{user?.email}</p>
             </div>
+            <button
+              onClick={() => setShowProfile(true)}
+              className="p-1.5 text-gray-400 hover:text-primary-500 hover:bg-primary-50 rounded-lg transition-colors"
+              title="账户设置"
+            >
+              <Settings className="w-4 h-4" />
+            </button>
             <button
               onClick={handleLogout}
               className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
@@ -75,6 +95,9 @@ export default function Layout() {
       <main className="flex-1 overflow-hidden">
         <Outlet />
       </main>
+
+      {/* Profile Modal */}
+      {showProfile && <ProfileModal onClose={() => setShowProfile(false)} />}
     </div>
   );
 }

@@ -46,6 +46,19 @@ export const sessionsApi = {
   delete: (id: string) => api.delete(`/sessions/${id}`),
 };
 
+// Profile
+export const profileApi = {
+  update: (name: string, avatar?: string) =>
+    api.put('/profile', { name, avatar }),
+  changePassword: (currentPassword: string, newPassword: string) =>
+    api.put('/profile/password', { currentPassword, newPassword }),
+};
+
+// Stats
+export const statsApi = {
+  summary: () => api.get('/stats/summary'),
+};
+
 // Documents
 export const documentsApi = {
   list: () => api.get('/documents'),
