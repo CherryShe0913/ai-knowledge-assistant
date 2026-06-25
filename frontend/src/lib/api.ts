@@ -46,6 +46,14 @@ export const sessionsApi = {
   delete: (id: string) => api.delete(`/sessions/${id}`),
 };
 
+// Search
+export const searchApi = {
+  search: (q: string, type: 'all' | 'sessions' | 'messages' = 'all') =>
+    api.get('/search', { params: { q, type } }),
+  exportSession: (sessionId: string): string =>
+    `${BASE_URL}/search/export/${sessionId}`,
+};
+
 // Profile
 export const profileApi = {
   update: (name: string, avatar?: string) =>

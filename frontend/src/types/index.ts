@@ -38,6 +38,27 @@ export interface ApiResponse<T> {
   message?: string;
 }
 
+export interface SearchResult {
+  query: string;
+  totalSessions: number;
+  totalMessages: number;
+  sessions: Array<{
+    id: string;
+    title: string;
+    updatedAt: string;
+    matchType: 'title';
+    _count: { messages: number };
+  }>;
+  messages: Array<{
+    id: string;
+    sessionId: string;
+    sessionTitle: string;
+    snippet: string;
+    role: string;
+    createdAt: string;
+  }>;
+}
+
 export interface UserStats {
   summary: {
     sessionCount: number;
