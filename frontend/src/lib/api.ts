@@ -46,6 +46,12 @@ export const sessionsApi = {
   delete: (id: string) => api.delete(`/sessions/${id}`),
 };
 
+// AI Document Analysis
+export const analyzeApi = {
+  summarize: (docId: string) => api.post(`/analyze/${docId}/summary`),
+  askUrl: (docId: string) => `${BASE_URL}/analyze/${docId}/ask`,
+};
+
 // Search
 export const searchApi = {
   search: (q: string, type: 'all' | 'sessions' | 'messages' = 'all') =>

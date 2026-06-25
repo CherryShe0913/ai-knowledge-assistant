@@ -1,12 +1,14 @@
 import { useEffect, useState, useRef } from 'react';
-import { FileText, Upload, Trash2, Plus, X } from 'lucide-react';
+import { FileText, Upload, Trash2, Plus, X, Sparkles } from 'lucide-react';
 import { documentsApi } from '../lib/api';
 import { Document } from '../types';
+import DocumentDetailDrawer from '../components/DocumentDetailDrawer';
 
 export default function DocumentsPage() {
   const [documents, setDocuments] = useState<Document[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [activeDoc, setActiveDoc] = useState<(Document & { content: string }) | null>(null);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [uploading, setUploading] = useState(false);
@@ -52,6 +54,13 @@ export default function DocumentsPage() {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
     }
+  };
+
+  const handleOpenDoc = async (doc: Document) => {
+    try {
+      const res = await documentsApi.get(doc.id);
+      setActiveDoc(res.data.data.document);
+    } catch { /* handled globally */ }
   };
 
   const handleDelete = async (id: string) => {
@@ -119,7 +128,8 @@ export default function DocumentsPage() {
             {documents.map((doc) => (
               <div
                 key={doc.id}
-                className="bg-white border border-gray-200 rounded-xl p-4 hover:shadow-md transition-shadow group"
+                onClick={() => handleOpenDoc(doc)}
+                className="bg-white border border-gray-200 rounded-xl p-4 hover:shadow-md hover:border-primary-200 transition-all cursor-pointer group"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-3 min-w-0">
@@ -134,20 +144,33 @@ export default function DocumentsPage() {
                     </div>
                   </div>
                   <button
-                    onClick={() => handleDelete(doc.id)}
+                    onClick={(e) => { e.stopPropagation(); handleDelete(doc.id); }}
                     className="opacity-0 group-hover:opacity-100 p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
-                <p className="text-xs text-gray-400 mt-3">
-                  {new Date(doc.createdAt).toLocaleDateString('zh-CN')}
-                </p>
+                <div className="flex items-center justify-between mt-3">
+                  <p className="text-xs text-gray-400">
+                    {new Date(doc.createdAt).toLocaleDateString('zh-CN')}
+                  </p>
+                  <span className="flex items-center gap-1 text-xs text-primary-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Sparkles className="w-3 h-3" />AI 分析
+                  </span>
+                </div>
               </div>
             ))}
           </div>
         )}
       </div>
+
+      {/* Document Detail Drawer */}
+      {activeDoc && (
+        <DocumentDetailDrawer
+          document={activeDoc}
+          onClose={() => setActiveDoc(null)}
+        />
+      )}
 
       {/* Create Modal */}
       {showModal && (
