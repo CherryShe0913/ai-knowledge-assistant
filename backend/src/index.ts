@@ -8,6 +8,7 @@ import { documentsRouter } from './routes/documents';
 import { profileRouter } from './routes/profile';
 import { statsRouter } from './routes/stats';
 import { searchRouter } from './routes/search';
+import { analyzeRouter } from './routes/analyze';
 import { errorHandler } from './middleware/errorHandler';
 
 dotenv.config();
@@ -36,6 +37,7 @@ app.use('/api/documents', documentsRouter);
 app.use('/api/profile', profileRouter);
 app.use('/api/stats', statsRouter);
 app.use('/api/search', searchRouter);
+app.use('/api/analyze', analyzeRouter);
 
 // Error handler (must be last)
 app.use(errorHandler);

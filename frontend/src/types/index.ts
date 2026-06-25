@@ -38,6 +38,14 @@ export interface ApiResponse<T> {
   message?: string;
 }
 
+export interface DocumentAnalysis {
+  summary: string;
+  keyPoints: string[];
+  tags: string[];
+  wordCount: number;
+  readingMinutes: number;
+}
+
 export interface SearchResult {
   query: string;
   totalSessions: number;
