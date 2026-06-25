@@ -4,6 +4,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ChatPage from './pages/ChatPage';
 import DocumentsPage from './pages/DocumentsPage';
+import StatsPage from './pages/StatsPage';
 import Layout from './components/Layout';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -48,6 +49,7 @@ export default function App() {
         >
           <Route index element={<ChatPage />} />
           <Route path="documents" element={<DocumentsPage />} />
+          <Route path="stats" element={<StatsPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

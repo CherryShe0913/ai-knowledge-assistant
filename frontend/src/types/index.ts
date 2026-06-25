@@ -37,3 +37,18 @@ export interface ApiResponse<T> {
   data?: T;
   message?: string;
 }
+
+export interface UserStats {
+  summary: {
+    sessionCount: number;
+    messageCount: number;
+    documentCount: number;
+  };
+  recentSessions: Array<{
+    id: string;
+    title: string;
+    updatedAt: string;
+    _count: { messages: number };
+  }>;
+  messageTrend: Array<{ date: string; count: number }>;
+}

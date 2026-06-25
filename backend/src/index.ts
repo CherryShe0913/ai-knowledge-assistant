@@ -5,6 +5,8 @@ import { authRouter } from './routes/auth';
 import { sessionsRouter } from './routes/sessions';
 import { chatRouter } from './routes/chat';
 import { documentsRouter } from './routes/documents';
+import { profileRouter } from './routes/profile';
+import { statsRouter } from './routes/stats';
 import { errorHandler } from './middleware/errorHandler';
 
 dotenv.config();
@@ -30,6 +32,8 @@ app.use('/api/auth', authRouter);
 app.use('/api/sessions', sessionsRouter);
 app.use('/api/chat', chatRouter);
 app.use('/api/documents', documentsRouter);
+app.use('/api/profile', profileRouter);
+app.use('/api/stats', statsRouter);
 
 // Error handler (must be last)
 app.use(errorHandler);
